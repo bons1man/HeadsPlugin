@@ -9,6 +9,7 @@ import dev.triumphteam.gui.guis.PaginatedGui;
 import net.kyori.adventure.text.Component;
 import org.bson.Document;
 import org.bukkit.*;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
@@ -157,6 +159,27 @@ public class HeadsListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDrop(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item =  event.getItemDrop().getItemStack();
+        if (item == null) {
+            return;
+        }
+
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) {
+            return;
+        }
+
+        if (itemMeta.getPersistentDataContainer().has(plugin.headKey)) {
+            String s = itemMeta.getPersistentDataContainer().get(plugin.headKey, PersistentDataType.STRING);
+            if (s.equals("Staffdex")) {
+                event.setCancelled(true);
             }
         }
     }
