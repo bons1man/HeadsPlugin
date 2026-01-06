@@ -201,11 +201,23 @@ public class HeadsListener implements Listener {
                             player.sendMessage(ChatColor.RED + "Je hebt geen staff hoofd aan!");
                         }
                     });
-                    headCollection.setItem(45, removeHead);
+                    headCollection.setItem(49, removeHead);
                     headCollection.setItem(48, ItemBuilder.from(Material.PAPER).setName(ChatColor.RED + "Vorige").asGuiItem(event -> headCollection.previous()));
                     headCollection.setItem(50, ItemBuilder.from(Material.PAPER).setName(ChatColor.RED + "Volgende").asGuiItem(event -> headCollection.next()));
 
-                    headCollection.setItem(52, ItemBuilder.from(Material.REDSTONE).setName(ChatColor.RED + "Sorteer op datum").asGuiItem(clickEvent -> {
+                    for (int i = 46; i < 53; i++) {
+                        switch(i) {
+                            case 48:
+                                continue;
+                            case 49:
+                                continue;
+                            case 50:
+                                continue;
+                        }
+                        headCollection.setItem(i, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).asGuiItem());
+                    }
+                    String clockTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTczMWE2ZmU1MDNlODY1MjI5OTZhMDg3YjNiMjRmZDM2NTk2OTgzZGIwMzg0NjY3N2MyYWJmMzIzYWE4NTc2In19fQ==";
+                    headCollection.setItem(45, ItemBuilder.from(createSkull(clockTexture)).setName(ChatColor.RED + "Sorteer op datum").asGuiItem(clickEvent -> {
                         List<Document> gesorteerdeList = staffList;
                         headCollection.clearPageItems();
                         gesorteerdeList.sort(new Comparator<Document>() {
@@ -221,7 +233,8 @@ public class HeadsListener implements Listener {
 
                         headCollection.update();
                     }));
-                    headCollection.setItem(53, ItemBuilder.from(Material.DIAMOND).setName(ChatColor.RED + "Sorteer van A-Z").asGuiItem(clickEvent -> {
+                    String bookTexture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjhmYmVlMmNkZjQ0MDYxNzZlZGE5Y2Y5MjBiOWNlNjk1OTBhMDQ5MGM3MjRhZTZjYzJlMmYzMTZlNWU3ZGQxZCJ9fX0=";
+                    headCollection.setItem(53, ItemBuilder.from(createSkull(bookTexture)).setName(ChatColor.RED + "Sorteer van A-Z").asGuiItem(clickEvent -> {
                         List<Document> gesorteerdeList = staffList;
                         headCollection.clearPageItems();
                         gesorteerdeList.sort(new Comparator<Document>() {
