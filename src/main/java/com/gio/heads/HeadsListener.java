@@ -211,9 +211,9 @@ public class HeadsListener implements Listener {
                         gesorteerdeList.sort(new Comparator<Document>() {
                             @Override
                             public int compare(Document o1, Document o2) {
-                                Date s1 = o1.getDate("Datum");
-                                Date s2 = o2.getDate("Datum");
-                                return s1.compareTo(s2);
+                                Date d1 = o1.getDate("Datum");
+                                Date d2 = o2.getDate("Datum");
+                                return d1.compareTo(d2);
                             }
                         });
 
