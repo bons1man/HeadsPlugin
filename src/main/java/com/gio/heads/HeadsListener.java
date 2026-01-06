@@ -50,13 +50,29 @@ public class HeadsListener implements Listener {
         Player player = event.getPlayer();
         String texture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTZjYzQ4NmMyYmUxY2I5ZGZjYjJlNTNkZDlhM2U5YTg4M2JmYWRiMjdjYjk1NmYxODk2ZDYwMmI0MDY3In19fQ==";
         ItemStack head = createSkull(texture);
-        PlayerInventory inventory = player.getInventory();
 
-        //Dit werkt niet omdat de head niet gelijk is aan head in inv omdat er een hele nieuwe met rndm UUID wordt gemaakt
-        //Nog gefixed worden dat als een speler joined dat hij niet nog een mooie staffdex krijgt
-        if (inventory.contains(head)) {
-            return;
-        } else {
+        SkullMeta headItemMeta = (SkullMeta) head.getItemMeta();
+        headItemMeta.getPersistentDataContainer().set(plugin.headKey,PersistentDataType.STRING, "Staffdex");
+        head.setItemMeta(headItemMeta);
+
+        PlayerInventory inventory = player.getInventory();
+        boolean found = false;
+        for (int i = 0; i < 41; i ++) {
+            ItemStack is = inventory.getItem(i);
+            if (is == null) {
+                continue;
+            }
+            ItemMeta im = is.getItemMeta();
+            if (im.getPersistentDataContainer().has(plugin.headKey, PersistentDataType.STRING)) {
+                String s = im.getPersistentDataContainer().get(plugin.headKey, PersistentDataType.STRING);
+                if (s.equals("Staffdex")) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
             inventory.addItem(head);
         }
 
@@ -158,8 +174,9 @@ public class HeadsListener implements Listener {
             return;
         }
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.PLAYER_HEAD) {
-            if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "Staff" + ChatColor.GRAY + "dex")) {
+        if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(plugin.headKey)) {
+            String s = player.getInventory().getItemInMainHand().getPersistentDataContainer().get(plugin.headKey, PersistentDataType.STRING);
+            if (s.equals("Staffdex")) {
                 if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                     PaginatedGui headCollection = Gui.paginated().title(Component.text(ChatColor.LIGHT_PURPLE + "Staff" + ChatColor.GRAY + "dex")).rows(6).pageSize(45).create();
 
