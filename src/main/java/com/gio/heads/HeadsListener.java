@@ -322,6 +322,7 @@ public class HeadsListener implements Listener {
                         persistentDataContainer.set(plugin.headKey, PersistentDataType.STRING, staffLid);
                         newSkull.setItemMeta(newSkullMeta);
 
+                        //todo: check hier de pdc inplaats van type
                         if (inv.getHelmet() != null) {
                             if (inv.getHelmet().getType() != Material.PLAYER_HEAD) {
                                 ItemStack helmet = inv.getHelmet();

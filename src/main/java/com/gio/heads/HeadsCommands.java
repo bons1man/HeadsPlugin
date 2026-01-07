@@ -28,7 +28,8 @@ public class HeadsCommands {
 
     @Subcommand("spawn <skin>")
     public void headsCommand(Player player, @Named("skin") String skin) {
-        //Als staff zijn/haar naam veranderd dat o
+        //todo: check of de sender een speler is
+        //Als staff zijn/haar naam veranderd??
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skullMeta.setDisplayName(ChatColor.RED + skin + "'s " + org.bukkit.ChatColor.LIGHT_PURPLE + "Staff" + org.bukkit.ChatColor.GRAY + "dex" + ChatColor.RED + " hoofd");
