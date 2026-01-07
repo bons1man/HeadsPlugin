@@ -1,5 +1,7 @@
 package com.gio.heads;
 
+import com.gio.heads.commands.SpawnHeadCommand;
+import com.gio.heads.events.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -9,13 +11,13 @@ import revxrsal.commands.bukkit.BukkitLamp;
 
 public final class Heads extends JavaPlugin {
 
-    private MongoClient client;
-    private MongoDatabase database;
-    private MongoCollection staffHeads;
-    private MongoCollection players;
+    public static MongoClient client;
+    public static MongoDatabase database;
+    public static MongoCollection staffHeads;
+    public static MongoCollection players;
 
-    public NamespacedKey uuidKey;
-    public NamespacedKey headKey;
+    public static NamespacedKey uuidKey;
+    public static NamespacedKey headKey;
 
     @Override
     public void onEnable() {
@@ -27,30 +29,17 @@ public final class Heads extends JavaPlugin {
         players = database.getCollection("players");
         staffHeads = database.getCollection("staffheads");
 
-        getServer().getPluginManager().registerEvents(new HeadsListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinEventListener(), this);
+        getServer().getPluginManager().registerEvents(new StaffdexClickListener(), this);
+        getServer().getPluginManager().registerEvents(new DropStaffdexListener(), this);
+        getServer().getPluginManager().registerEvents(new HeadArmorClickListener(), this);
+        getServer().getPluginManager().registerEvents(new HeadPickUpListener(), this);
 
         var lamp = BukkitLamp.builder(this).build();
-        lamp.register(new HeadsCommands(this));
+        lamp.register(new SpawnHeadCommand(this));
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-    public MongoClient getClient() {
-        return client;
-    }
-
-    public MongoDatabase getDatabase() {
-        return database;
-    }
-
-    public MongoCollection getStaffHeads() {
-        return staffHeads;
-    }
-
-    public MongoCollection getPlayers() {
-        return players;
     }
 }

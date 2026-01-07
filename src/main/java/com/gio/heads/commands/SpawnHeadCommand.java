@@ -1,6 +1,7 @@
-package com.gio.heads;
+package com.gio.heads.commands;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import com.gio.heads.Heads;
 import net.md_5.bungee.api.ChatColor;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -18,11 +19,11 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 @Command("heads")
 @CommandPermission("heads.staff")
-public class HeadsCommands {
+public class SpawnHeadCommand {
 
     private Heads plugin;
 
-    public HeadsCommands(Heads plugin) {
+    public SpawnHeadCommand(Heads plugin) {
         this.plugin = plugin;
     }
 
@@ -52,14 +53,14 @@ public class HeadsCommands {
         player.getInventory().addItem(skull);
 
         Document goalDocument = new Document("UUID", speler.getUniqueId().toString());
-        Document searchDocument = (Document) plugin.getStaffHeads().find(goalDocument).first();
+        Document searchDocument = (Document) Heads.staffHeads.find(goalDocument).first();
 
         if (searchDocument == null) {
             Document document = new Document();
             document.put("Stafflid", skin);
             document.put("UUID", speler.getUniqueId().toString());
             document.put("Uitgegeven heads", 0);
-            plugin.getStaffHeads().insertOne(document);
+            Heads.staffHeads.insertOne(document);
         }
     }
 }
